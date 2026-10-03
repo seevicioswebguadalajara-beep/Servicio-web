@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Citas</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f8fafc; padding: 20px; color: #1e293b; margin: 0; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: #0288d1; font-size: 22px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 700px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 14px; vertical-align: middle; }
+        th { background-color: #0288d1; color: white; }
+        
+        /* Badges de Estado */
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; text-decoration: none; display: inline-block; }
+        .badge-pendiente { background: #fef3c7; color: #b45309; }
+        .badge-atendido { background: #dcfce7; color: #15803d; }
+
+        /* Botones de Acción */
+        .btn-delete { background: #fee2e2; color: #dc2626; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: bold; }
+        .btn-delete:hover { background: #fca5a5; }
+
+        .btn-back { display: inline-block; margin-top: 20px; color: #0288d1; text-decoration: none; font-weight: bold; }
+        .btn-logout { background: #f1f5f9; color: #475569; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <span>🔒 Panel de Administración - Citas</span>
+            <a href="/logout" class="btn-logout">Cerrar Sesión</a>
+        </h1>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha / Hora Recepción</th>
+                        <th>Paciente</th>
+                        <th>Servicio</th>
+                        <th>Teléfono / WhatsApp</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sol in solicitudes %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td style="color: #64748b; font-size: 13px; font-weight: 600;">🕒 {{ sol.fecha_registro if sol.fecha_registro else 'Sin Fecha' }}</td>
+                        <td><strong>{{ sol.paciente }}</strong></td>
+                        <td>{{ sol.servicio }}</td>
+                        <td><a href="https://wa.me/52{{ sol.telefono }}" target="_blank" style="color: #25d366; font-weight: bold; text-decoration: none;">💬 {{ sol.telefono }}</a></td>
+                        <td>
+                            <a href="/cambiar_estado/{{ sol.id }}" class="badge {% if sol.estado == 'Atendido' %}badge-atendido{% else %}badge-pendiente{% endif %}">
+                                {% if sol.estado == 'Atendido' %}✓ Atendido{% else %}⏳ Pendiente{% endif %}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/eliminar_cita/{{ sol.id }}" class="btn-delete" onclick="return confirm('¿Seguro que deseas eliminar esta cita?');">🗑️ Borrar</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #94a3b8; padding: 20px;">No hay solicitudes registradas aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="/" class="btn-back">← Volver a la página principal</a>
+    </div>
+</body>
+</html>
