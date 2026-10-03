@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administrador - Consultorio Dental</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 0; }
+        body { background: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .login-card { background: white; border-radius: 20px; padding: 30px; width: 100%; max-width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; }
+        .login-card h2 { color: #0288d1; margin-bottom: 20px; font-size: 20px; }
+        .input-custom { width: 100%; padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; margin-bottom: 15px; outline: none; font-size: 14px; }
+        .btn-login { width: 100%; background: #0288d1; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 15px; }
+        .alert-error { color: #ef4444; font-size: 13px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2><i class="fas fa-user-shield"></i> Panel Administrador</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert-error"><i class="fas fa-triangle-exclamation"></i> {{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="password" name="password" class="input-custom" placeholder="Ingresa la contraseña" required>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>
